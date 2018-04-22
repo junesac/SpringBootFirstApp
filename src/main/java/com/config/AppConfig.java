@@ -1,16 +1,14 @@
 package com.config;
 
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 
 @Configuration
 public class AppConfig {
 	
-	@Bean
-	public static NoOpPasswordEncoder passwordEncoder() {
-		return (NoOpPasswordEncoder) NoOpPasswordEncoder.getInstance();
-	}
+	/*
+	 * @Bean public static NoOpPasswordEncoder passwordEncoder() { return
+	 * (NoOpPasswordEncoder) NoOpPasswordEncoder.getInstance(); }
+	 */
 
 	// @Bean(name = "dataSource")
 	// public DriverManagerDataSource dataSource() {

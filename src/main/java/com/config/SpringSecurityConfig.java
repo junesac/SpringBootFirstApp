@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Configuration
 @EnableWebSecurity
@@ -28,9 +29,10 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 		// 2. jdbc authentication
 
 		auth.jdbcAuthentication().dataSource(dataSource)
-				.usersByUsernameQuery("select username, password, enabled from users " + "where username=?")
-				.authoritiesByUsernameQuery("select U.username, R.ROLENAME from users u, roles r, user_role ur "
-						+ "where u.userid =ur.userid and r.rid = ur.rid and username = ?");
+				.usersByUsernameQuery("select username, password, enabled from users1 " + "where username=?")
+				.authoritiesByUsernameQuery("select U.username, R.ROLENAME from users1 u, roles r, user_role ur "
+						+ "where u.userid =ur.userid and r.rid = ur.rid and username = ?")
+				.passwordEncoder(new BCryptPasswordEncoder());
 	}
 
 	@Override
@@ -45,12 +47,26 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
 		// 2. jdbc authentication
 
-		http.authorizeRequests().antMatchers("/activity/**").access("hasRole('ADMIN') or hasRole('USER')")
-				.antMatchers("/info/**").access("hasRole('ADMIN') or hasRole('MANAGER')").and().formLogin();
+		// http.authorizeRequests().antMatchers("/activity/**").access("hasRole('ADMIN')
+		// or hasRole('USER')")
+		// .antMatchers("/info/**").access("hasRole('ADMIN') or
+		// hasRole('MANAGER')").and().formLogin();
 
-		
 		// 3. Added login & logout pages
+		http.authorizeRequests().antMatchers("/", "/home").permitAll().antMatchers("/activity/**")
+				.access("hasRole('ADMIN') or hasRole('USER')").antMatchers("/info/**")
+				.access("hasRole('ADMIN') or hasRole('MANAGER')").anyRequest().authenticated().and().formLogin();
 		
+		// .loginPage("/login").permitAll().and().logout().permitAll();
+
+		// http.exceptionHandling().accessDeniedPage("/403");
+
+		// http.authorizeRequests().antMatchers("/",
+		// "/home").permitAll().antMatchers("/admin").hasRole("ADMIN")
+		// .anyRequest().authenticated().and().formLogin().loginPage("/login").permitAll().and().logout()
+		// .permitAll();
+		// http.exceptionHandling().accessDeniedPage("/403");
+
 	}
 
 }

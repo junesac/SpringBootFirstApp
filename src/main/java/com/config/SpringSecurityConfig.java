@@ -48,26 +48,12 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
     // 2. jdbc authentication
 
-    // http.authorizeRequests().antMatchers("/activity/**").access("hasRole('ADMIN')
-    // or hasRole('USER')")
-    // .antMatchers("/info/**").access("hasRole('ADMIN') or
-    // hasRole('MANAGER')").and().formLogin();
-
     // 3. Added login & logout pages
     http.authorizeRequests().antMatchers("/", "/home").permitAll().antMatchers("/activity/**")
         .access("hasRole('ADMIN') or hasRole('USER')").antMatchers("/info/**")
         .access("hasRole('ADMIN') or hasRole('MANAGER')").anyRequest().authenticated().and().csrf()
         .disable().httpBasic();
 
-    // .loginPage("/login").permitAll().and().logout().permitAll();
-
-    // http.exceptionHandling().accessDeniedPage("/403");
-
-    // http.authorizeRequests().antMatchers("/",
-    // "/home").permitAll().antMatchers("/admin").hasRole("ADMIN")
-    // .anyRequest().authenticated().and().formLogin().loginPage("/login").permitAll().and().logout()
-    // .permitAll();
-    // http.exceptionHandling().accessDeniedPage("/403");
 
   }
 

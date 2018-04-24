@@ -11,19 +11,22 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 @EnableWebSecurity
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
-	@Autowired
-	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-		auth.inMemoryAuthentication().withUser("sachin").password("{noop}password").roles("USER");
-		auth.inMemoryAuthentication().withUser("admin").password("{noop}password").roles("ADMIN");
-		auth.inMemoryAuthentication().withUser("dba").password("{noop}password").roles("MANAGER");
-	}
+  @Autowired
+  public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+    auth.inMemoryAuthentication().withUser("sachin").password("{noop}password").roles("USER");
+    auth.inMemoryAuthentication().withUser("admin").password("{noop}password").roles("ADMIN");
+    auth.inMemoryAuthentication().withUser("dba").password("{noop}password").roles("MANAGER");
+  }
 
-	@Override
-	protected void configure(HttpSecurity http) throws Exception {
+  @Override
+  protected void configure(HttpSecurity http) throws Exception {
 
-		http.authorizeRequests().antMatchers("/activity/**").access("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
-				.antMatchers("/info/**").access("hasRole('ROLE_ADMIN') or hasRole('ROLE_MANAGER')").and().formLogin();
+    http.authorizeRequests().antMatchers("/activity/**")
+        .access("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')").antMatchers("/info/**")
+        .access("hasRole('ROLE_ADMIN') or hasRole('ROLE_MANAGER')").and().csrf().disable()
+        .httpBasic();
+    // .formLogin();
 
-	}
+  }
 
 }

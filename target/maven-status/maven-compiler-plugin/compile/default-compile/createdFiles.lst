@@ -1,3 +1,5 @@
-com\entiity\Employee.class
+com\config\WebConfig.class
+com\controller\InfoController.class
+com\controller\HomeController.class
 com\Application.class
-com\dao\EmployeeDao.class
+com\controller\ActivityController.class

@@ -2,6 +2,7 @@ package com.controller;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -10,6 +11,7 @@ import com.model.UserActivity;
 
 @RestController
 @RequestMapping("activity")
+@CrossOrigin
 public class ActivityController {
 
 	@RequestMapping(value = "get", method = RequestMethod.GET, produces = { "application/json" })

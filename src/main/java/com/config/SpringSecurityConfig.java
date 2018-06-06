@@ -29,9 +29,10 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 		// 2. jdbc authentication
 
 		auth.jdbcAuthentication().dataSource(dataSource)
-				.usersByUsernameQuery("select username, password, enabled from users1 " + "where username=?")
+				.usersByUsernameQuery(
+						"select username, password, enabled from users1 " + "where lower(username)=lower(?)")
 				.authoritiesByUsernameQuery("select U.username, R.ROLENAME from users1 u, roles r, user_role ur "
-						+ "where u.userid =ur.userid and r.rid = ur.rid and username = ?")
+						+ "where u.userid =ur.userid and r.rid = ur.rid and lower(username) = lower(?)")
 				.passwordEncoder(new BCryptPasswordEncoder());
 	}
 
@@ -48,7 +49,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 		// 2. jdbc authentication
 
 		// 3. Added login & logout pages
-		http.authorizeRequests().antMatchers("/", "/home").permitAll().antMatchers("/activity/**")
+		http.authorizeRequests().antMatchers("/", "/home/**").permitAll().antMatchers("/activity/**")
 				.access("hasRole('ADMIN') or hasRole('USER')").antMatchers("/info/**")
 				.access("hasRole('ADMIN') or hasRole('MANAGER')").anyRequest().authenticated().and().csrf().disable()
 				.httpBasic();
